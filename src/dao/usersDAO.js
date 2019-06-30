@@ -31,11 +31,17 @@ export default class UsersDAO {
   static async addUser(userInfo) {
     try {
       // Insert a user with the "name", "email", and "password" fields.
-      await users.insertOne({
-        name: userInfo.name,
-        email: userInfo.email,
-        password: userInfo.password,
-      })
+      await users.insertOne(
+        {
+          name: userInfo.name,
+          email: userInfo.email,
+          password: userInfo.password,
+          // or ...userInfo
+        },
+        {
+          w: "majority",
+        },
+      )
       return { success: true }
     } catch (e) {
       if (String(e).startsWith("MongoError: E11000 duplicate key error")) {
